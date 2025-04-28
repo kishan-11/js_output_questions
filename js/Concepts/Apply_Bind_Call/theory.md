@@ -6,12 +6,12 @@ Let's start with a simple object with a method:
 
 ```javascript
 const person1 = {
-  firstName: 'Kishan',
-  lastName: 'Patel',
-  printFullName: function() {
-    console.log(this.firstName + ' ' + this.lastName)
-  }
-}
+  firstName: "Kishan",
+  lastName: "Patel",
+  printFullName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
 person1.printFullName(); // Output: Kishan Patel
 ```
 
@@ -19,9 +19,9 @@ Now, let's say we have another object:
 
 ```javascript
 const person2 = {
-  firstName: 'Bhoomi',
-  lastName: 'Shah'
-}
+  firstName: "Bhoomi",
+  lastName: "Shah",
+};
 ```
 
 ## Problem: How can we use the printFullName function with person2?
@@ -30,12 +30,12 @@ const person2 = {
 
 ```javascript
 const person2 = {
-  firstName: 'Bhoomi',
-  lastName: 'Shah',
-  printFullName: function() {
-    console.log(this.firstName + ' ' + this.lastName)
-  }
-}
+  firstName: "Bhoomi",
+  lastName: "Shah",
+  printFullName: function () {
+    console.log(this.firstName + " " + this.lastName);
+  },
+};
 ```
 
 **Drawbacks**: Creates duplicate code and makes future maintenance difficult.
@@ -52,18 +52,18 @@ person1.printFullName.call(person2); // Output: Bhoomi Shah
 
 ```javascript
 function printFullName() {
-  console.log(this.firstName + ' ' + this.lastName)
+  console.log(this.firstName + " " + this.lastName);
 }
 
 const person1 = {
-  firstName: 'Kishan',
-  lastName: 'Patel',
-}
+  firstName: "Kishan",
+  lastName: "Patel",
+};
 
 const person2 = {
-  firstName: 'Bhoomi',
-  lastName: 'Shah',
-}
+  firstName: "Bhoomi",
+  lastName: "Shah",
+};
 
 printFullName.call(person1); // Output: Kishan Patel
 printFullName.call(person2); // Output: Bhoomi Shah
@@ -78,10 +78,10 @@ function printFullName(city, state) {
   console.log(`${this.firstName} ${this.lastName} is from ${city}, ${state}`);
 }
 
-printFullName.call(person1, 'Surendranagar', 'Gujarat');
+printFullName.call(person1, "Surendranagar", "Gujarat");
 // Output: Kishan Patel is from Surendranagar, Gujarat
 
-printFullName.call(person2, 'Limbdi', 'Gujarat');
+printFullName.call(person2, "Limbdi", "Gujarat");
 // Output: Bhoomi Shah is from Limbdi, Gujarat
 ```
 
@@ -90,10 +90,10 @@ printFullName.call(person2, 'Limbdi', 'Gujarat');
 `.apply()` works like `.call()`, but accepts arguments as an array:
 
 ```javascript
-printFullName.apply(person1, ['Surendranagar', 'Gujarat']);
+printFullName.apply(person1, ["Surendranagar", "Gujarat"]);
 // Output: Kishan Patel is from Surendranagar, Gujarat
 
-printFullName.apply(person2, ['Limbdi', 'Gujarat']);
+printFullName.apply(person2, ["Limbdi", "Gujarat"]);
 // Output: Bhoomi Shah is from Limbdi, Gujarat
 ```
 
@@ -102,8 +102,12 @@ printFullName.apply(person2, ['Limbdi', 'Gujarat']);
 Unlike `.call()` and `.apply()`, `.bind()` returns a new function with the specified `this` context that can be executed later:
 
 ```javascript
-const printablePerson1 = printFullName.bind(person1, 'Surendranagar', 'Gujarat');
-const printablePerson2 = printFullName.bind(person2, 'Limbdi', 'Gujarat');
+const printablePerson1 = printFullName.bind(
+  person1,
+  "Surendranagar",
+  "Gujarat"
+);
+const printablePerson2 = printFullName.bind(person2, "Limbdi", "Gujarat");
 
 printablePerson1(); // Output: Kishan Patel is from Surendranagar, Gujarat
 printablePerson2(); // Output: Bhoomi Shah is from Limbdi, Gujarat
@@ -114,16 +118,16 @@ printablePerson2(); // Output: Bhoomi Shah is from Limbdi, Gujarat
 You can provide some arguments during binding and the rest when calling the function:
 
 ```javascript
-const printablePerson1 = printFullName.bind(person1, 'Surendranagar');
-const printablePerson2 = printFullName.bind(person2, 'Limbdi');
+const printablePerson1 = printFullName.bind(person1, "Surendranagar");
+const printablePerson2 = printFullName.bind(person2, "Limbdi");
 
-printablePerson1('Gujarat');
+printablePerson1("Gujarat");
 // Output: Kishan Patel is from Surendranagar, Gujarat
 
-printablePerson1('Maharashtra');
+printablePerson1("Maharashtra");
 // Output: Kishan Patel is from Surendranagar, Maharashtra
 
-printablePerson2('Gujarat');
+printablePerson2("Gujarat");
 // Output: Bhoomi Shah is from Limbdi, Gujarat
 ```
 
@@ -133,22 +137,22 @@ Arrow functions behave differently with `.call()`, `.apply()`, and `.bind()` bec
 
 ```javascript
 const person = {
-  firstName: 'Kishan',
-  lastName: 'Patel'
+  firstName: "Kishan",
+  lastName: "Patel",
 };
 
 // Regular function
-const printNameRegular = function() {
-  console.log(this.firstName + ' ' + this.lastName);
+const printNameRegular = function () {
+  console.log(this.firstName + " " + this.lastName);
 };
 
 // Arrow function
 const printNameArrow = () => {
-  console.log(this.firstName + ' ' + this.lastName);
+  console.log(this.firstName + " " + this.lastName);
 };
 
 printNameRegular.call(person); // Output: "Kishan Patel"
-printNameArrow.call(person);   // Output: "undefined undefined"
+printNameArrow.call(person); // Output: "undefined undefined"
 ```
 
 The arrow function's `this` is lexically bound to the surrounding scope when the function is created and cannot be changed with `.call()`, `.apply()`, or `.bind()`.
@@ -156,22 +160,26 @@ The arrow function's `this` is lexically bound to the surrounding scope when the
 ## Common Use Cases
 
 ### Function Borrowing
+
 Borrow methods from other objects:
 
 ```javascript
 const calculator = {
-  multiply: function(a, b) { return a * b; }
+  multiply: function (a, b) {
+    return a * b;
+  },
 };
 
 const scientificCalc = {
   // Borrow the multiply method
   doMultiplication(a, b) {
     return calculator.multiply.call(this, a, b);
-  }
+  },
 };
 ```
 
 ### Event Handlers
+
 Maintaining context in event handlers:
 
 ```javascript
@@ -181,11 +189,11 @@ class Component {
     // Using bind to maintain "this" context
     this.handleClick = this.handleClick.bind(this);
   }
-  
+
   handleClick() {
     console.log(`${this.name} clicked`);
   }
-  
+
   render() {
     // Without .bind(), "this" would be the button element, not the component
     return `<button onclick="${this.handleClick}">Click me</button>`;
@@ -194,6 +202,7 @@ class Component {
 ```
 
 ### Function Currying
+
 Creating specialized functions:
 
 ```javascript
@@ -242,12 +251,12 @@ ES6+ features provide alternatives to some use cases:
 function greet(greeting, name) {
   return `${greeting}, ${name}!`;
 }
-const sayHello = greet.bind(null, 'Hello');
-sayHello('John'); // "Hello, John!"
+const sayHello = greet.bind(null, "Hello");
+sayHello("John"); // "Hello, John!"
 
 // Modern approach with arrow functions and closures
-const sayHello2 = name => greet('Hello', name);
-sayHello2('John'); // "Hello, John!"
+const sayHello2 = (name) => greet("Hello", name);
+sayHello2("John"); // "Hello, John!"
 ```
 
 ### Instead of `.apply()` for variable arguments:
@@ -271,9 +280,9 @@ function showType() {
   console.log(typeof this);
 }
 
-showType.call(1);         // "object" - Number object
-showType.call("string");  // "object" - String object
-showType.call(true);      // "object" - Boolean object
+showType.call(1); // "object" - Number object
+showType.call("string"); // "object" - String object
+showType.call(true); // "object" - Boolean object
 ```
 
 ### Null or undefined as context:
@@ -286,14 +295,16 @@ function showContext() {
 }
 
 // In non-strict mode
-showContext.call(null);      // window object
+showContext.call(null); // window object
 showContext.call(undefined); // window object
 
 // In strict mode
-"use strict";
-showContext.call(null);      // null
+("use strict");
+showContext.call(null); // null
 showContext.call(undefined); // undefined
 ```
+
+[Checkout pollyfills for these function](pollyfill.js)
 
 ## Summary
 
